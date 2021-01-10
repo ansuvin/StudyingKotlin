@@ -32,7 +32,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -61,7 +61,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <Button
         android:id="@+id/backButton"
@@ -76,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/goButton"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

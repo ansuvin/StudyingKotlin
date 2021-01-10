@@ -4,6 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,13 +16,31 @@ class NameActivity : AppCompatActivity() {
 
         val goResultButton = findViewById<Button>(R.id.goButton)
         val backButton = findViewById<Button>(R.id.backButton)
+        val editText = findViewById<EditText>(R.id.editText)
 
         goResultButton.setOnClickListener {
-            startActivity(Intent(this, ResultActivity::class.java))
+            val intent = Intent(this, ResultActivity::class.java)
+            intent.putIntegerArrayListExtra("result", ArrayList(getLottoNumbersFromHash(editText.text.toString())))
+            intent.putExtra("name", editText.text.toString())       // 이름 전달
+            startActivity(intent)
         }
 
         backButton.setOnClickListener {
             finish()
         }
+    }
+
+    fun getLottoNumbersFromHash(name: String): MutableList<Int>{
+        val list = mutableListOf<Int>()
+
+        for(number in 1..45){
+            list.add(number)
+        }
+
+        val targetString = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date()) + name
+
+        list.shuffle(Random(targetString.hashCode().toLong()))
+
+        return list.subList(0,6)
     }
 }

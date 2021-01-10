@@ -2,7 +2,12 @@ package com.example.pra01_lottonumber
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ResultActivity : AppCompatActivity() {
 
@@ -12,8 +17,18 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
+        val resultLabel = findViewById<TextView>(R.id.resultLabel)
+
         // intent로부터 전달받은 결과 배열 가져오기
         val result = intent.getIntegerArrayListExtra("result")
+        val name = intent.getStringExtra("name")
+
+        resultLabel.text = "랜덤으로 생성된\n로또번호입니다."
+
+        // 만약 name이 전달되었다면
+        if(!TextUtils.isEmpty(name)){
+            resultLabel.text = "${name}님의\n${SimpleDateFormat("yyyy년 MM월 dd일").format(Date())}\n로또번호입니다."
+        }
 
         // 전달받은 결과가 있는 경우에만 실행
         result?.let {
