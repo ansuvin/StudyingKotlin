@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.cardview.widget.CardView
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +20,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ResultActivity::class.java)
 
             // intent의 결과 데이터를 전달 Int리스트를 전달 -> "putIntegerArrayListExtra"사용
-            intent.putIntegerArrayListExtra("result", ArrayList(getRandomLottoNumbeers()))
+            //intent.putIntegerArrayListExtra("result", ArrayList(getRandomLottoNumbeers()))
+            intent.putIntegerArrayListExtra("result", ArrayList(getShuffleLottoNumbers()))
 
             startActivity(intent)
         }
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // 램덤으로 1~45 번호중 하나의 번호를 생성하는 함수
+    // Random을 이용하여 램덤으로 1~45 번호중 하나의 번호를 생성하는 함수
     fun getRandomLottoNumber() : Int {     // Int 값을 반환
         return Random().nextInt(45)+1
     }
@@ -53,5 +55,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         return lottoNumbers
+    }
+
+    // Shuffle을 이용하여 번호를 섞은후 6개의 번호를 자르는 방법
+    fun getShuffleLottoNumbers(): MutableList<Int> {
+        val list = mutableListOf<Int>()
+
+        for(number in 1..45){   // 1~45까지 돌면서 리스트에 로또 번호 저장
+            list.add(number)
+        }
+
+        list.shuffle()  // 리스트 무작위로 섞기
+
+        return list.subList(0,6)    // 리스트를 0~5 까지 잘라서 반환
     }
 }
