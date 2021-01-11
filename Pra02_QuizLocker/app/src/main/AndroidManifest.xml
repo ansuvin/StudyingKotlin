@@ -18,16 +18,17 @@
             android:exported="true"></service>
 
         <activity android:name=".ScreenOffExActivity">
+        </activity>
+        <activity android:name=".PrefFragmentActivity"></activity>
+        <activity android:name=".PrefExActivity" />
+        <activity android:name=".FileExActivity" />
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PrefFragmentActivity"></activity>
-        <activity android:name=".PrefExActivity" />
-        <activity android:name=".FileExActivity" />
-        <activity android:name=".MainActivity" />
 
         <receiver
             android:name=".BootCompleteReceiver"

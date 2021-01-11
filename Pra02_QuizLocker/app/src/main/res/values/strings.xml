@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Pra02_QuizLocker</string>
+    <string name="app_name">퀴즈 잠금화면</string>
+    <string-array name="category">
+        <item>일반상식</item>
+        <item>역사</item>
+        <item>수도</item>
+    </string-array>
 </resources>
