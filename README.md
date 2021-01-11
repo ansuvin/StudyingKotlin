@@ -8,3 +8,13 @@
   * Random
   * Shuffle
   * HashCode
+
+### Pra02_QuizLocker
+퀴즈 잠금화면 [2021-01-11]
+* 핵심
+  * BroadcastReceiver - 화면이 꺼졌을 때의 이벤트
+  * Service - 앱이 종료되어도 실행하기 위해 **(UI없이 백그라운드에서 실행 )**
+  * file, shared preference, PreferenceFragment
+  * SeekBar
+  * 나인 패치
+  * Vibration
