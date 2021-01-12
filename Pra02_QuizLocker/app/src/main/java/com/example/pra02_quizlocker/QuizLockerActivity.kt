@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.preference.MultiSelectListPreference
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.WindowManager
 import android.widget.ImageView
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_quiz_locker.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 
 class QuizLockerActivity : AppCompatActivity() {
 
@@ -52,16 +55,30 @@ class QuizLockerActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         //퀴즈 데이터 가져오기
-        val json = assets.open("capital.json").reader().readText()
-        val quizArray = JSONArray(json)
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val category = pref.getStringSet("category", null)
+        var list : MutableList<JSONArray> = mutableListOf()
+        if(category?.contains("일반상식") == true){
+            list.add(JSONArray(assets.open("common.json").reader().readText()))
+            Log.e("TEST", "일반상식")
+        }
+        if(category?.contains("역사") == true){
+            list.add(JSONArray(assets.open("history.json").reader().readText()))
+            Log.e("TEST", "역사")
+        }
+        if(category?.contains("수도") == true){
+            list.add(JSONArray(assets.open("capital.json").reader().readText()))
+            Log.e("TEST", "수도")
+        }
 
         // 퀴즈 고르기
-        quiz = quizArray.getJSONObject(Random().nextInt(quizArray.length()))
+        quiz = list.get(Random().nextInt(list.size)).getJSONObject(Random().nextInt(3))
 
         // 퀴즈 보이기
         quizLabel.text = quiz?.getString("question")
         choice1.text = quiz?.getString("choice1")
         choice2.text = quiz?.getString("choice2")
+        Log.e("TEST", quiz.toString())
 
         // 정/오답 횟수 보이기
         val id = quiz?.getInt("id").toString() ?:""
