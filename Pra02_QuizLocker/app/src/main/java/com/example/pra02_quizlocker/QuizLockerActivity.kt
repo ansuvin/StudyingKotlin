@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.view.WindowManager
 import android.widget.ImageView
@@ -79,7 +81,7 @@ class QuizLockerActivity : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                
+
             }
             // 터치가 끝나면
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -108,6 +110,16 @@ class QuizLockerActivity : AppCompatActivity() {
                     leftImg.setImageResource(R.drawable.padlock)
                     rightImg.setImageResource(R.drawable.padlock)
                     seekBar?.progress = 50
+
+                    // 진동울리기
+                    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    // SDK 버전에 따라 다름
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        // 1초 동안 100의 세기 (최고 255) 로 1회 진동
+                        vibrator.vibrate(VibrationEffect.createOneShot(1000,100))
+                    } else {
+                        vibrator.vibrate(1000)
+                    }
                 }
             }
         }
