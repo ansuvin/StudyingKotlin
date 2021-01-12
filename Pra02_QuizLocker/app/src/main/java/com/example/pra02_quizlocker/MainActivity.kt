@@ -1,5 +1,6 @@
 package com.example.pra02_quizlocker
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.preference.MultiSelectListPreference
 import android.preference.PreferenceFragment
 import android.preference.SwitchPreference
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +19,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         fragmentManager.beginTransaction().replace(R.id.preferenceContent, fragment).commit()
+
+        initbButton.setOnClickListener { initAnswerCount() }
+    }
+
+    // 정/오답 횟수 초기화
+    private fun initAnswerCount() {
+        val correctAnswerPref = getSharedPreferences("correctAnswer", Context.MODE_PRIVATE)
+        val wrongAnswerPref = getSharedPreferences("wrongAnswer", Context.MODE_PRIVATE)
+
+        correctAnswerPref.edit().clear().apply()
+        wrongAnswerPref.edit().clear().apply()
     }
 
     class MyPreferenceFragment : PreferenceFragment() {
