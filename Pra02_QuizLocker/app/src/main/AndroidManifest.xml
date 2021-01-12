@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- foregroundService를 실행하기 위한 권한 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"   />
 
     <application
         android:allowBackup="true"
@@ -12,17 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pra02_QuizLocker">
+        <activity android:name=".QuizLockerActivity"></activity>
+
         <service
             android:name=".LockScreenService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
-        <activity android:name=".ScreenOffExActivity">
-        </activity>
-        <activity android:name=".PrefFragmentActivity"></activity>
+        <activity android:name=".ScreenOffExActivity"></activity>
+        <activity android:name=".PrefFragmentActivity" />
         <activity android:name=".PrefExActivity" />
         <activity android:name=".FileExActivity" />
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

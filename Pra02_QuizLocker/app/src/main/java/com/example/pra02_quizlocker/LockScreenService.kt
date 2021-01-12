@@ -51,7 +51,7 @@ class LockScreenService : Service() {
         // 포그라운드 서비스 - 반드시 '알림'을 사용자에게 띄워야 하는방식
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             // Notification(상단 알림) 채널 생성
-            val chan = NotificationChannel(ANDROID_CHANNEL_ID, "MyService", NotificationManager.IMPORTANCE_NONE)
+            val chan = NotificationChannel(ANDROID_CHANNEL_ID, "LockScreenService", NotificationManager.IMPORTANCE_NONE)
             chan.lightColor = Color.BLUE
             chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
 

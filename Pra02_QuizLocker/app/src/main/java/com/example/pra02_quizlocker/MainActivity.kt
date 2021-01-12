@@ -1,9 +1,12 @@
 package com.example.pra02_quizlocker
 
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.MultiSelectListPreference
 import android.preference.PreferenceFragment
+import android.preference.SwitchPreference
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +41,32 @@ class MainActivity : AppCompatActivity() {
 
                 true
 
+            }
+
+            // 잠금화면 사용 스위치 객체
+            val useLockScreenPref = findPreference("useLockScreen") as SwitchPreference
+            useLockScreenPref.setOnPreferenceClickListener {
+                when {
+                    // 퀴즈 잠금화면 사용이 체크된 경우 LockScreenService 실행
+                    useLockScreenPref.isChecked -> {
+                        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+                            activity.startForegroundService(Intent(activity, LockScreenService::class.java))
+                        }else{
+                            activity.startService(Intent(Intent(activity, LockScreenService::class.java)))
+                        }
+                    }
+                    // 사용 해제되면 중지
+                    else -> activity.stopService(Intent(activity, LockScreenService::class.java))
+                }
+                true
+            }
+
+            if (useLockScreenPref.isChecked){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    activity.startForegroundService(Intent(activity, LockScreenService::class.java))
+                } else {
+                    activity.startService(Intent(activity, LockScreenService::class.java))
+                }
             }
         }
     }
