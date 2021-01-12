@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuizLockerActivity">
+    tools:context=".QuizLockerActivity"
+    tools:viewBindingIgnore="true">
 
     <TextView
         android:id="@+id/correctCountLabel"
@@ -39,6 +40,7 @@
         android:gravity="center"
         android:text="포루투갈의\n수도는?"
         android:textSize="32sp"
+        android:padding="8dp"
         android:background="@drawable/sbubble"
         app:layout_constraintBottom_toTopOf="@+id/seekBar"
         app:layout_constraintEnd_toEndOf="parent"
