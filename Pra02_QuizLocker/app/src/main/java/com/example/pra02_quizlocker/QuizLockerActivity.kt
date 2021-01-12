@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_quiz_locker.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -19,6 +20,9 @@ import java.util.*
 class QuizLockerActivity : AppCompatActivity() {
 
     var quiz: JSONObject? = null
+
+    val wrongAnswerPref by lazy { getSharedPreferences("wrongAnswer", Context.MODE_PRIVATE) }
+    val correctAnswerPref by lazy { getSharedPreferences("correctAnswer", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +59,14 @@ class QuizLockerActivity : AppCompatActivity() {
         quiz = quizArray.getJSONObject(Random().nextInt(quizArray.length()))
 
         // 퀴즈 보이기
-        Log.e("TEST",quiz?.get("question").toString())
         quizLabel.text = quiz?.getString("question")
         choice1.text = quiz?.getString("choice1")
         choice2.text = quiz?.getString("choice2")
+
+        // 정/오답 횟수 보이기
+        val id = quiz?.getInt("id").toString() ?:""
+        correctCountLabel.text = "정답횟수: "+correctAnswerPref.getInt(id, 0)
+        wrongCountLabel.text = "오답횟수: "+ wrongAnswerPref.getInt(id,0)
 
         // SeekBar 값이 변경되면
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
@@ -98,15 +106,30 @@ class QuizLockerActivity : AppCompatActivity() {
     }
 
     fun checkChoice(choie: String){
+        val seekBar = findViewById<SeekBar>(R.id.seekBar)
+        val leftImg = findViewById<ImageView>(R.id.leftImageView)
+        val rightImg = findViewById<ImageView>(R.id.rightImageView)
         quiz?.let {     // null이 아니면
             when {
                 // 답이 같으면
-                choie == it.getString("answer") -> finish()
+                choie == it.getString("answer") -> {
+                    val id = it.getInt("id").toString()
+                    var count = correctAnswerPref.getInt(id, 0)
+                    count++
+                    correctAnswerPref.edit().putInt(id, count).apply()
+                    correctCountLabel.text ="정답횟수: "+count
+
+                    finish()
+                }
                 else -> {
                     // 틀리면
-                    val seekBar = findViewById<SeekBar>(R.id.seekBar)
-                    val leftImg = findViewById<ImageView>(R.id.leftImageView)
-                    val rightImg = findViewById<ImageView>(R.id.rightImageView)
+                    val id = it.getInt("id").toString()
+                    var count = wrongAnswerPref.getInt(id , 0)
+                    count++
+                    wrongAnswerPref.edit().putInt(id, count).apply()
+                    wrongCountLabel.text= "오답횟수: "+count
+
+                    // UI 초기화
                     leftImg.setImageResource(R.drawable.padlock)
                     rightImg.setImageResource(R.drawable.padlock)
                     seekBar?.progress = 50
