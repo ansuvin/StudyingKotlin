@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -42,4 +43,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // 구글 맵 관련
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    // 구글 맵 클러스터 사용
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    // CardView
+    implementation "androidx.cardview:cardview:1.0.0"
 }
