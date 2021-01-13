@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-            TODO("Not yet implemented")
         }
 
     }
