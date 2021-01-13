@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
                     // 측정시작
                     startTime = System.currentTimeMillis()
                     isStart = true
+                    // 측정중 animation
+                    imageView.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.rotate))
                 }
 
                 // 측정이 시작된 경우
