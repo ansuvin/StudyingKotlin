@@ -1,5 +1,8 @@
 package com.example.pra03_punchpower
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -91,7 +94,18 @@ class MainActivity : AppCompatActivity() {
             SensorManager.SENSOR_DELAY_NORMAL
         )
 
-        imageView.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.alpha_tran))
+        // imageView.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.alpha_tran))
+
+        AnimatorInflater.loadAnimator(this@MainActivity, R.animator.property_animation).apply {
+            // 애니메이션 종료
+            addListener(object : AnimatorListenerAdapter(){
+                override fun onAnimationEnd(animation: Animator?) {
+                    start()
+                }
+            })
+            setTarget(imageView)
+            start()
+        }
     }
 
     // 펀치력 측정이 완료된 경우
