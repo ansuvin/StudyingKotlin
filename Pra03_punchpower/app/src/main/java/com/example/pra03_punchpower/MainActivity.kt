@@ -1,8 +1,6 @@
 package com.example.pra03_punchpower
 
-import android.animation.Animator
-import android.animation.AnimatorInflater
-import android.animation.AnimatorListenerAdapter
+import android.animation.*
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -94,9 +92,9 @@ class MainActivity : AppCompatActivity() {
             SensorManager.SENSOR_DELAY_NORMAL
         )
 
-        // imageView.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.alpha_tran))
+        imageView.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.alpha_tran))
 
-        AnimatorInflater.loadAnimator(this@MainActivity, R.animator.property_animation).apply {
+        /*AnimatorInflater.loadAnimator(this@MainActivity, R.animator.property_animation).apply {
             // 애니메이션 종료
             addListener(object : AnimatorListenerAdapter(){
                 override fun onAnimationEnd(animation: Animator?) {
@@ -105,6 +103,20 @@ class MainActivity : AppCompatActivity() {
             })
             setTarget(imageView)
             start()
+        }*/
+
+        AnimatorInflater.loadAnimator(this@MainActivity, R.animator.color_main).apply {
+            // 컬러 애니메이션 불러오기 ( ObjectAnimator 클래스로 캐스팅 as 이용?)
+            val colorAnimator = this@apply as? ObjectAnimator
+            Log.e("TEST", "GG")
+            // colorAnimator가 ObjectAnimator인 경우
+            colorAnimator?.apply {
+                // Evluator를 ArgbEvaluator()로 설정
+                setEvaluator(ArgbEvaluator())
+                target = window.decorView.findViewById(android.R.id.content)
+                Log.e("TEST", "START()")
+                start()
+            }
         }
     }
 
