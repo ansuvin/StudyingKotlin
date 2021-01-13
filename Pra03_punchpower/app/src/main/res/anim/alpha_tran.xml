@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="1000" />
+    <!-- 반복할 경우 repeatMode: restart, reverse 모드가 잇다 -->
+    <!-- restart 반복하겠다, reverse 방향을 바꿈 -->
+    <translate
+        android:fromYDelta="50%"
+        android:toYDelta="-100%"
+        android:duration="1000"
+        android:repeatMode="reverse"
+        android:repeatCount="infinite"  />
+</set>
