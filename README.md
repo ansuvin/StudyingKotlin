@@ -32,3 +32,7 @@
    * CardView
    * FloatingActionButton
    * 쓰레드 **(네트워크 작업은 긴시간이 필요하여 UI 쓰레도를 사용하면 UI가 멈춰버리기 때문)**
+   * Google Maps ClusterItem (interface) (**ClusterManager가 화면에 표시할 정보**를 제공하는 인터페이스)
+   * Google Maps ClusterManager (구글맵과 ClusterItem으로 맵에 **'마커'** 로 표시할지 **'숫자로 된 원'** 으로 표시할지 관리하는 클래스)
+   * Google Maps ClusterRenderer (마커의 아이콘을 바꿈)
+   * AutoCompleteText (텍스트 자동완성)
