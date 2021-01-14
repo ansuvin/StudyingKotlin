@@ -16,6 +16,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.view.get
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -278,7 +279,35 @@ class MainActivity : AppCompatActivity() {
         task = ToiletReadTask()
         task?.execute()
 
-        // searchVar의 검색 아이콘의 이벤트 리스너 설정
+        // 자동완성 항목을 선택하면 바로 마커로 이동
+        searchBar.autoCompleteText.setOnItemClickListener { parent, view, position, id ->
+            // autoCompleteTextView의 텍스트를 읽어 키워드로 가져옴
+            val keyword = parent.getItemAtPosition(position).toString()
+            if(TextUtils.isEmpty(keyword)) return@setOnItemClickListener
+
+            // 검색 키워드에 해당하는 JSONObject 찾기
+            toilets.findByChildProperty("FNAME", keyword)?.let {
+                // itemMap 에서 JSONObject를 키로 가진 MyItem 객체를 가져오기
+                val myItem = itemMap[it]
+
+                // ClusterRenderer에서 myItem을 기반으로 마커를 검색
+                val marker = clusterRenderer?.getMarker(myItem)
+                marker?.showInfoWindow()
+
+                // 마커의 위치로 맵의 카메라를 이동
+                googleMap?.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                LatLng(it.getDouble("Y_WGS84"), it.getDouble("X_WGS84")), DEFAULT_ZOOM_LEVEL
+                        )
+                )
+                clusterManager?.cluster()
+            }
+
+            // 검색 텍스트뷰의 텍스트 지우기
+            searchBar.autoCompleteText.setText("")
+        }
+
+        // searchBar의 검색 아이콘의 이벤트 리스너 설정
         searchBar.imageView.setOnClickListener{
             // autoCompleteTextView의 텍스트를 읽어 키워드로 가져옴
             val keyword = searchBar.autoCompleteText.text.toString()
