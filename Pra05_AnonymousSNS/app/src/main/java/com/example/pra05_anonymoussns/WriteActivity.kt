@@ -91,7 +91,7 @@ class WriteActivity : AppCompatActivity() {
 
     // RecyclerView 에서 사용하는 View 홀더 클래스스
     inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
-        val imageView = itemView.imageView
+        val imageView = itemView.imageView1
     }
 
     // RecyclerView 의 어댑터 클래스

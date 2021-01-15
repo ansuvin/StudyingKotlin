@@ -7,7 +7,7 @@
     app:cardUseCompatPadding="true">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/default_bg"
