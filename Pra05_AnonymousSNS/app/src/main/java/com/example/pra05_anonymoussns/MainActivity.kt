@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     // RecyclerView 에서 사용하는 View 홀더 클래스스
     inner class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
-        val imageView: ImageView = itemView.imageView
+        val imageView: ImageView = itemView.imageView1
         val contentsText: TextView = itemView.contentsText
         val timeTextView: TextView = itemView.timeTextView
         val commentCountText: TextView = itemView.commentCountTextView
