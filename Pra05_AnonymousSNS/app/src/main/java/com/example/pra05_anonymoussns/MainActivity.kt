@@ -171,6 +171,14 @@ class MainActivity : AppCompatActivity() {
             holder.contentsText.text = post.message
             holder.timeTextView.text = getDiffTimeText(post.writeTime as Long)
             holder.commentCountText.text = "0"
+
+            // 카드가 클릭된 경우
+            holder.itemView.setOnClickListener {
+                // 상세화면을 호출할 Intent 를 생성
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("postId", post.postId)
+                startActivity(intent)
+            }
         }
 
         // RecyclerView 에서 몇개의 행을 그릴지
