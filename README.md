@@ -36,3 +36,10 @@
    * Google Maps ClusterManager (구글맵과 ClusterItem으로 맵에 **'마커'** 로 표시할지 **'숫자로 된 원'** 으로 표시할지 관리하는 클래스)
    * Google Maps ClusterRenderer (마커의 아이콘을 바꿈)
    * AutoCompleteText (텍스트 자동완성)
+   
+### Pra05_AnonymousSNS
+익명 소셜 서비스 앱 [2021-01-15]
+* 핵심
+  * RecyclerView
+  * Picasso 이미지 로드 라이브러리 (메모리의 효율적인 관리를 위해)
+  * Firebase
