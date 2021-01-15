@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -47,4 +48,11 @@ dependencies {
     api 'com.squareup.picasso:picasso:2.71828'
     // 시간 관련 라이브러리
     implementation 'net.danlew:android.joda:2.9.9.3'
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database:19.6.0'
+    implementation 'com.google.firebase:firebase-core:18.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'
