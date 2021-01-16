@@ -1,6 +1,8 @@
 package com.example.pra05_anonymoussns
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,24 +25,44 @@ import kotlinx.android.synthetic.main.card_post.contentsText
 
 class DetailActivity : AppCompatActivity() {
 
+    val TAG = "DetailActivity"
+
     val commentList = mutableListOf<Comment>()
+
+    var postId = ""
+
+    lateinit var preferences : SharedPreferences
+
+    var curWriteId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val postId = intent.getStringExtra("postId")
+        postId = intent.getStringExtra("postId")!!
 
         val layoutManager = LinearLayoutManager(this@DetailActivity)
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = MyAdapter()
 
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+
+        getId()
+
         floatingActionButton2.setOnClickListener {
             val intent = Intent(this@DetailActivity, WriteActivity::class.java)
             intent.putExtra("mode", "comment")
             intent.putExtra("postId", postId)
             startActivity(intent)
+        }
+
+        floatingActionButton3.setOnClickListener {
+            if (preferences.getString("userId", "").equals(curWriteId)){
+                val intent = Intent(this@DetailActivity, ModifyActivity::class.java)
+                intent.putExtra("postId", postId)
+                startActivity(intent)
+            }
         }
 
         // 게시글의 ID 로 게시글의 데이터로 바로 접근
@@ -50,7 +72,10 @@ class DetailActivity : AppCompatActivity() {
                     snapshot.let {
                         val post = it.getValue(Post::class.java)
                         post?.let {
-                            Picasso.get().load(it.bgUrl)
+                            Picasso.get().load(post.bgUrl)
+                                    .fit()
+                                    .centerCrop()
+                                    .into(detailBackground)
                             contentsText.text = post.message
                         }
                     }
@@ -122,6 +147,20 @@ class DetailActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    fun getId() {
+        val database = FirebaseDatabase.getInstance().reference
+        database.child("Posts").child(postId).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val writeId = snapshot.child("writeId").getValue(String::class.java)
+                curWriteId = writeId.toString()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("TAGDetailActivity", "err")
+            }
+        })
     }
 
     inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>() {

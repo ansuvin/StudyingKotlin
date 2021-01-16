@@ -1,9 +1,12 @@
 package com.example.pra05_anonymoussns
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,11 +31,14 @@ import org.joda.time.Hours
 import org.joda.time.Minutes
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.prefs.Preferences
 
 class MainActivity : AppCompatActivity() {
 
     // 글 목록을 저장하는 변수
     val posts: MutableList<Post> = mutableListOf()
+
+    lateinit var preferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +50,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, WriteActivity::class.java)
             startActivity(intent)
         }
+
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putString("userId", getMyId())
+        editor.apply()
 
         // RecyclerView 에 LayoutManager 설정
         val layoutManager = LinearLayoutManager(this@MainActivity)
@@ -210,4 +221,10 @@ class MainActivity : AppCompatActivity() {
             return format.format(Date(targetTime))
         }
     }
+
+    // 디바이스 아이디 반환
+    private fun getMyId(): String {
+        return Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+    }
+
 }

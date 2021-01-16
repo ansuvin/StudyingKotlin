@@ -12,13 +12,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_write.*
 import kotlinx.android.synthetic.main.card_background.view.*
-import com.example.pra05_anonymoussns.WriteActivity.MyViewHolder as MyViewHolder
 
 class WriteActivity : AppCompatActivity() {
 

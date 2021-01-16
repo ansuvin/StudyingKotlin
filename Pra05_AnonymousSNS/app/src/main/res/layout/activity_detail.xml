@@ -14,7 +14,7 @@
         app:layout_constraintGuide_percent="0.5"/>
 
     <ImageView
-        android:id="@+id/writeBackground"
+        android:id="@+id/detailBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -37,10 +37,10 @@
         android:textSize="24sp"
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@+id/writeBackground"
-        app:layout_constraintEnd_toEndOf="@+id/writeBackground"
-        app:layout_constraintStart_toStartOf="@+id/writeBackground"
-        app:layout_constraintTop_toTopOf="@+id/writeBackground" />
+        app:layout_constraintBottom_toBottomOf="@+id/detailBackground"
+        app:layout_constraintEnd_toEndOf="@+id/detailBackground"
+        app:layout_constraintStart_toStartOf="@+id/detailBackground"
+        app:layout_constraintTop_toTopOf="@+id/detailBackground" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -63,6 +63,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_email" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
