@@ -48,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
 
-        getId()
+        getPostWriteId()
 
         floatingActionButton2.setOnClickListener {
             val intent = Intent(this@DetailActivity, WriteActivity::class.java)
@@ -61,6 +61,7 @@ class DetailActivity : AppCompatActivity() {
             if (preferences.getString("userId", "").equals(curWriteId)){
                 val intent = Intent(this@DetailActivity, ModifyActivity::class.java)
                 intent.putExtra("postId", postId)
+                intent.putExtra("modeM", "post")
                 startActivity(intent)
             }
         }
@@ -149,7 +150,7 @@ class DetailActivity : AppCompatActivity() {
             })
     }
 
-    fun getId() {
+    fun getPostWriteId() {
         val database = FirebaseDatabase.getInstance().reference
         database.child("Posts").child(postId).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -177,6 +178,16 @@ class DetailActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(holder.imageView)
                 holder.commentText.text = comment.message
+            }
+            
+            holder.itemView.setOnClickListener {
+                if (preferences.getString("userId", "").equals(curWriteId)){
+                    val intent = Intent(this@DetailActivity, ModifyActivity::class.java)
+                    intent.putExtra("commentId", comment.commentId)
+                    intent.putExtra("postId", postId)
+                    intent.putExtra("modeM", "comment")
+                    startActivity(intent)
+                }
             }
         }
 

@@ -18,4 +18,9 @@ class Comment {
 
     // 배경 이미지
     var bgUrl = ""
+
+    override fun toString(): String {
+        return "Comment(commentId='$commentId', postId='$postId', writerId='$writerId', message='$message', writeTime=$writeTime, bgUrl='$bgUrl')"
+    }
+
 }

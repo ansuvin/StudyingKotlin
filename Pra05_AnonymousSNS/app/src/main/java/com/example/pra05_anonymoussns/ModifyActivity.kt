@@ -41,13 +41,31 @@ class ModifyActivity : AppCompatActivity() {
     var currentBgPosition = 0
 
     var postId = ""
+    var mode = ""
+    var commentId = ""
     var post: Post? = null
+    var comment: Comment? = null
+    var num = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify)
 
         postId = intent.getStringExtra("postId")!!
+        intent.getStringExtra("commentId")?.let {
+            commentId = intent.getStringExtra("commentId")!!
+        }
+        mode = intent.getStringExtra("modeM")!!
+
+
+        if (mode == "comment"){
+            getCount()
+            getData(2)
+        } else {
+            getData(1)
+        }
+
+        Log.e(TAG+" tag", "postId: $postId, commentId: $commentId, mode: $mode")
 
         supportActionBar?.title = "수정하기"
 
@@ -59,7 +77,7 @@ class ModifyActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = MyAdapter()
 
-        getData()
+
 
         modifyButton.setOnClickListener {
             // 메세지가 없는 경우
@@ -68,28 +86,67 @@ class ModifyActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Post 객체 생성
-            val post = Post()
-            // Firebase 의 Posts 참조에서 객체를 저장하기 위한 새로운 카를 생성하고 참조를 newRef 에 저장
-            // push()를 사용하면 유니크한 키값이 생성되는 것을 보장함.
-            val newRef = FirebaseDatabase.getInstance().getReference("Posts/$postId")
-            // 글이 쓰여진 시간은 Firebase 서버의 시간으로 설정
-            // ServerValue.TIMESTAMP 는 데이터가 저장되는 시점에 서버 시간을 저장함.
-            post.writeTime = ServerValue.TIMESTAMP
-            // 배경 Uri 주소를 현재 선택된 배경의 주소로 할당
-            post.bgUrl = bgList[currentBgPosition]
-            // 메세지는 input EditText 의 텍스트 내용
-            post.message = input.text.toString()
-            // 글쓴 사람의 ID는 디바이스 아이디로 할당
-            post.writeId = getMyId()
-            // 글의 ID는 새로 생성된 파이어베이스 참조키로 할당
-            post.postId = postId
-            // Post 객체를 새로 생성한 참조에 저장
-            newRef.setValue(post)
-            // 저장 성공 -> Activity 종료
-            Toast.makeText(applicationContext, "공유되었습니다.", Toast.LENGTH_SHORT).show()
-            finish()
+            if (mode == "post") {
+                // Post 객체 생성
+                val post = Post()
+                // Firebase 의 Posts 참조에서 객체를 저장하기 위한 새로운 카를 생성하고 참조를 newRef 에 저장
+                // push()를 사용하면 유니크한 키값이 생성되는 것을 보장함.
+                val newRef = FirebaseDatabase.getInstance().getReference("Posts/$postId")
+                // 글이 쓰여진 시간은 Firebase 서버의 시간으로 설정
+                // ServerValue.TIMESTAMP 는 데이터가 저장되는 시점에 서버 시간을 저장함.
+                post.writeTime = ServerValue.TIMESTAMP
+                // 배경 Uri 주소를 현재 선택된 배경의 주소로 할당
+                post.bgUrl = bgList[currentBgPosition]
+                // 메세지는 input EditText 의 텍스트 내용
+                post.message = input.text.toString()
+                // 글쓴 사람의 ID는 디바이스 아이디로 할당
+                post.writeId = getMyId()
+                // 글의 ID는 새로 생성된 파이어베이스 참조키로 할당
+                post.postId = postId
+                // Post 객체를 새로 생성한 참조에 저장
+                newRef.setValue(post)
+                // 저장 성공 -> Activity 종료
+                Toast.makeText(applicationContext, "수정되었습니다.", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                // Comment 객체 생성
+                val comment = Comment()
+                // Firebase 의 Posts 참조에서 객체를 저장하기 위한 새로운 카를 생성하고 참조를 newRef 에 저장
+                // push()를 사용하면 유니크한 키값이 생성되는 것을 보장함.
+                val newRef = FirebaseDatabase.getInstance().getReference("Comments/$postId/$commentId")
+                // 글이 쓰여진 시간은 Firebase 서버의 시간으로 설정
+                // ServerValue.TIMESTAMP 는 데이터가 저장되는 시점에 서버 시간을 저장함.
+                comment.writeTime = ServerValue.TIMESTAMP
+                // 배경 Uri 주소를 현재 선택된 배경의 주소로 할당
+                comment.bgUrl = bgList[currentBgPosition]
+                // 메세지는 input EditText 의 텍스트 내용
+                comment.message = input.text.toString()
+                // 글쓴 사람의 ID는 디바이스 아이디로 할당
+                comment.writerId = getMyId()
+                // 글의 ID는 새로 생성된 파이어베이스 참조키로 할당
+                comment.commentId = commentId
+                // Post 객체를 새로 생성한 참조에 저장
+                newRef.setValue(comment)
+                // 저장 성공 -> Activity 종료
+                Toast.makeText(applicationContext, "수정되었습니다.", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
+    }
+
+    fun getCount() {
+        val database = FirebaseDatabase.getInstance().reference
+        database.child("Posts").child(postId).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val comCnt = snapshot.child("commentCount").getValue(Int::class.java)
+                num = comCnt!!
+                Log.e(TAG, "num: "+num)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "err")
+            }
+        })
     }
 
     // 디바이스 아이디 반환
@@ -97,20 +154,38 @@ class ModifyActivity : AppCompatActivity() {
         return Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
     }
 
-    fun getData() {
+    fun getData(key: Int) {
         val database = FirebaseDatabase.getInstance().reference
-        database.child("Posts").child(postId).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                post = snapshot.getValue(Post::class.java)!!
-                Log.e(TAG, post.toString())
-                Picasso.get().load(Uri.parse(post!!.bgUrl)).fit().centerCrop().into(writeBackground)
-                input.setText(post!!.message)
-            }
+        when(key){
+            1 -> {      // postMode
+                database.child("Posts").child(postId).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        post = snapshot.getValue(Post::class.java)!!
+                        Picasso.get().load(Uri.parse(post!!.bgUrl)).fit().centerCrop().into(writeBackground)
+                        input.setText(post!!.message)
+                    }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "err")
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "err")
+                    }
+                })
             }
-        })
+            2 -> {      // commentMode
+                database.child("Comments").child(postId).child(commentId).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        comment = snapshot.getValue(Comment::class.java)
+                        Picasso.get().load(Uri.parse(comment!!.bgUrl)).fit().centerCrop().into(writeBackground)
+                        input.setText(comment!!.message)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "err")
+                    }
+
+                })
+            }
+        }
+
     }
 
     // RecyclerView 에서 사용하는 View 홀더 클래스스
