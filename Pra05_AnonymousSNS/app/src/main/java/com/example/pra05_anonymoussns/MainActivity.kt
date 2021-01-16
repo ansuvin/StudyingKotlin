@@ -170,7 +170,8 @@ class MainActivity : AppCompatActivity() {
             // 카드에 글 쓰기
             holder.contentsText.text = post.message
             holder.timeTextView.text = getDiffTimeText(post.writeTime as Long)
-            holder.commentCountText.text = "0"
+            holder.commentCountText.text = post.commentCount.toString()
+            Log.e("TEST", post.commentCount.toString())
 
             // 카드가 클릭된 경우
             holder.itemView.setOnClickListener {

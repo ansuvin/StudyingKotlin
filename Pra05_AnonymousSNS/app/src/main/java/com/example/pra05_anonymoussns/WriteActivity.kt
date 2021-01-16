@@ -5,14 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ServerValue
+import com.google.android.gms.auth.api.signin.internal.Storage
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_write.*
@@ -20,6 +21,8 @@ import kotlinx.android.synthetic.main.card_background.view.*
 import com.example.pra05_anonymoussns.WriteActivity.MyViewHolder as MyViewHolder
 
 class WriteActivity : AppCompatActivity() {
+
+    val TAG = "WriteActivity"
 
     // 배경 리스트 데이터 res/drawable 에 있는 배경 이미지를 url 주소로 사용
     // url 주소로 사용하면 추후 웹에 있는 이미지 URL도 바로 사용 가능
@@ -42,6 +45,8 @@ class WriteActivity : AppCompatActivity() {
     var mode = "post"
     var postId = ""
 
+    var num = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
@@ -61,6 +66,10 @@ class WriteActivity : AppCompatActivity() {
         
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = MyAdapter()
+
+        if (mode == "comment"){
+            getCount()
+        }
 
         // 공유하기 버튼
         sendButton.setOnClickListener {
@@ -111,6 +120,8 @@ class WriteActivity : AppCompatActivity() {
                 comment.commentId = newRef.key.toString()
                 // Post 객체를 새로 생성한 참조에 저장
                 newRef.setValue(comment)
+                // update
+                countUpdate()
                 // 저장 성공 -> Activity 종료
                 Toast.makeText(applicationContext, "공유되었습니다.", Toast.LENGTH_SHORT).show()
                 finish()
@@ -118,6 +129,28 @@ class WriteActivity : AppCompatActivity() {
 
 
         }
+    }
+
+    fun getCount() {
+        val database = FirebaseDatabase.getInstance().reference
+        database.child("Posts").child(postId).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val comCnt = snapshot.child("commentCount").getValue(Int::class.java)
+                num = comCnt!!
+                Log.e(TAG, "num: "+num)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "err")
+            }
+        })
+    }
+
+    fun countUpdate(){
+        var count = num
+        val database = FirebaseDatabase.getInstance().reference
+        Log.e("countttt", count.toString())
+        database.child("Posts").child(postId).child("commentCount").setValue(++count)
     }
 
     // 디바이스 아이디 반환
