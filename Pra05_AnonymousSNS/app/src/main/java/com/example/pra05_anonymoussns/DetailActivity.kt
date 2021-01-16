@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
@@ -63,6 +64,8 @@ class DetailActivity : AppCompatActivity() {
                 intent.putExtra("postId", postId)
                 intent.putExtra("modeM", "post")
                 startActivity(intent)
+            } else {
+                Toast.makeText(applicationContext, "게시글을 수정할 권한이 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -179,14 +182,16 @@ class DetailActivity : AppCompatActivity() {
                     .into(holder.imageView)
                 holder.commentText.text = comment.message
             }
-            
+
             holder.itemView.setOnClickListener {
-                if (preferences.getString("userId", "").equals(curWriteId)){
+                if (preferences.getString("userId", "").equals(comment.writerId)){
                     val intent = Intent(this@DetailActivity, ModifyActivity::class.java)
                     intent.putExtra("commentId", comment.commentId)
                     intent.putExtra("postId", postId)
                     intent.putExtra("modeM", "comment")
                     startActivity(intent)
+                } else {
+                    Toast.makeText(applicationContext, "댓글을 수정할 권한이 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
