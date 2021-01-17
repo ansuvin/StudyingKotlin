@@ -50,17 +50,13 @@ class LoginActivity : AppCompatActivity() {
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { it ->
                     if (it.isSuccessful) {
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.success_login,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (FirebaseAuth.getInstance().currentUser?.isEmailVerified!!){
+                            toastMSG("인증받은 사용자 입니다.")
+                        } else {
+                            toastMSG("인증받지 않은 사용자 입니다.")
+                        }
                     } else {
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.failed_login,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        toastMSG(R.string.failed_login)
                         Log.e(TAG, it.exception.toString())
                     }
                 }
@@ -77,30 +73,36 @@ class LoginActivity : AppCompatActivity() {
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { it ->
                     if (it.isSuccessful) {
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.success_signup,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        emailAuthentication()
+                        toastMSG(R.string.success_signup)
                     } else {
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.failed_signup,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        toastMSG(R.string.failed_signup)
                         Log.e(TAG, it.exception.toString())
                     }
                 }
         }
     }
 
+    fun emailAuthentication(){
+        FirebaseAuth.getInstance().currentUser
+            ?.sendEmailVerification()
+            ?.addOnCompleteListener {
+                if (it.isSuccessful) {
+                    toastMSG("이메일로 들어가 인증을 진행해 주세요")
+                } else {
+                    toastMSG("실패")
+                    Log.e(TAG, "err: ${it.exception.toString()}")
+                }
+            }
+    }
+
     // 이메일 유효성 검사
     private fun isValidEmail(): Boolean {
         if(email.isEmpty()){
-            Toast.makeText(applicationContext, "이메일이 비어있습니다.", Toast.LENGTH_SHORT).show()
+            toastMSG("이메일이 비었습니다.")
             return false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(applicationContext, "이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
+            toastMSG("이메일 형식이 아닙니다.")
             return false
         }
         return true
@@ -109,13 +111,20 @@ class LoginActivity : AppCompatActivity() {
     // 비밀번호 유효성 검사
     private fun isValidPasswd(): Boolean {
         if (password.isEmpty()) {
-            Toast.makeText(applicationContext, "비밀번호가 공백입니다.", Toast.LENGTH_SHORT).show()
+            toastMSG("비밀번호가 공백입니다.")
             return false
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            Toast.makeText(applicationContext, "비밀번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
+            toastMSG("비밀번호 형식이 아닙니다.")
             return false
         }
         return true
+    }
+
+    fun toastMSG(str: String){
+        Toast.makeText(applicationContext, str, Toast.LENGTH_SHORT).show()
+    }
+    fun toastMSG(strId: Int){
+        Toast.makeText(applicationContext, strId, Toast.LENGTH_SHORT).show()
     }
 
 }
