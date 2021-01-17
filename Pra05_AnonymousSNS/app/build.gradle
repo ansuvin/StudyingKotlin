@@ -55,6 +55,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:18.0.1'
     // FirebaseUi
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
