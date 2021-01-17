@@ -1,5 +1,6 @@
 package com.example.pra05_anonymoussns
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -51,12 +52,14 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { it ->
                     if (it.isSuccessful) {
                         if (FirebaseAuth.getInstance().currentUser?.isEmailVerified!!){
-                            toastMSG("인증받은 사용자 입니다.")
+                            showToast("인증받은 사용자 입니다.")
+                            val intent = Intent(this@LoginActivity, PhoneAuthActivity::class.java)
+                            startActivity(intent)
                         } else {
-                            toastMSG("인증받지 않은 사용자 입니다.")
+                            showToast("인증받지 않은 사용자 입니다.")
                         }
                     } else {
-                        toastMSG(R.string.failed_login)
+                        showToast(R.string.failed_login)
                         Log.e(TAG, it.exception.toString())
                     }
                 }
@@ -74,9 +77,9 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener { it ->
                     if (it.isSuccessful) {
                         emailAuthentication()
-                        toastMSG(R.string.success_signup)
+                        showToast(R.string.success_signup)
                     } else {
-                        toastMSG(R.string.failed_signup)
+                        showToast(R.string.failed_signup)
                         Log.e(TAG, it.exception.toString())
                     }
                 }
@@ -88,9 +91,9 @@ class LoginActivity : AppCompatActivity() {
             ?.sendEmailVerification()
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
-                    toastMSG("이메일로 들어가 인증을 진행해 주세요")
+                    showToast("이메일로 들어가 인증을 진행해 주세요")
                 } else {
-                    toastMSG("실패")
+                    showToast("실패")
                     Log.e(TAG, "err: ${it.exception.toString()}")
                 }
             }
@@ -99,10 +102,10 @@ class LoginActivity : AppCompatActivity() {
     // 이메일 유효성 검사
     private fun isValidEmail(): Boolean {
         if(email.isEmpty()){
-            toastMSG("이메일이 비었습니다.")
+            showToast("이메일이 비었습니다.")
             return false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            toastMSG("이메일 형식이 아닙니다.")
+            showToast("이메일 형식이 아닙니다.")
             return false
         }
         return true
@@ -111,19 +114,19 @@ class LoginActivity : AppCompatActivity() {
     // 비밀번호 유효성 검사
     private fun isValidPasswd(): Boolean {
         if (password.isEmpty()) {
-            toastMSG("비밀번호가 공백입니다.")
+            showToast("비밀번호가 공백입니다.")
             return false
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            toastMSG("비밀번호 형식이 아닙니다.")
+            showToast("비밀번호 형식이 아닙니다.")
             return false
         }
         return true
     }
 
-    fun toastMSG(str: String){
+    fun showToast(str: String){
         Toast.makeText(applicationContext, str, Toast.LENGTH_SHORT).show()
     }
-    fun toastMSG(strId: Int){
+    fun showToast(strId: Int){
         Toast.makeText(applicationContext, strId, Toast.LENGTH_SHORT).show()
     }
 
