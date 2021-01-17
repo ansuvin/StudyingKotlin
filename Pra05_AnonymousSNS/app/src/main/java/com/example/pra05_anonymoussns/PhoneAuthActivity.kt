@@ -16,7 +16,6 @@ class PhoneAuthActivity : AppCompatActivity() {
     val TAG = "PhoneAuthActivity"
 
     var phoneNumber = ""
-    val smscode = "123456"
     var authNum = ""
 
     var storedVerificationId = ""
@@ -29,6 +28,7 @@ class PhoneAuthActivity : AppCompatActivity() {
     private val callbacks by lazy {
         object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onCodeSent(verifycationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                // SMS를 보냄
                 showToast("인증코드가 전송되었습니다. 60초 이내에 입력해주세요!")
                 storedVerificationId = verifycationId
                 resendToken = token
@@ -73,13 +73,12 @@ class PhoneAuthActivity : AppCompatActivity() {
                 .build()
 
             if(!phoneNumber.isEmpty()){
-
-                //firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber("+82$phoneNumber", smscode)
                 PhoneAuthProvider.verifyPhoneNumber(options)
             }
         }
 
         btn_auth.setOnClickListener {
+            // 인증 객체를 만들기
             credential = PhoneAuthProvider.getCredential(storedVerificationId, et_authNum.text.toString())
             auth.signInWithCredential(credential)
                 .addOnCompleteListener { it ->
