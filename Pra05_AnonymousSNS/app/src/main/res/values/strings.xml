@@ -11,4 +11,9 @@
     <string name="signup">회원가입</string>
     <string name="success_signup">회원가입 성공</string>
     <string name="failed_signup">회원가입 실패</string>
+
+    <!-- FaceBook Login -->
+    <string name="facebook_app_id">128534109090576</string>
+    <string name="fb_login_protocol_scheme">fb128534109090576</string>
+
 </resources>
