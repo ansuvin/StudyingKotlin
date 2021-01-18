@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,9 +34,9 @@ class MainActivity : AppCompatActivity() {
             // WriteDialog
             val dialog = WriteDialog()
             // 다이얼로그 완료 리스너
-            dialog.listener = {title, post ,time->
+            dialog.listener = {title, post ,time, isSoon->
                 // 데이터베이스 저장
-                saveData(title, post, time)
+                saveData(title, post, time, isSoon)
                 // recyclerView 업데이트
                 updateRecyclerView()
             }
@@ -74,6 +75,10 @@ class MainActivity : AppCompatActivity() {
             holder.postTextView.text = dataList[position].get("post").toString()
             holder.timeTextView.text = dataList[position].get("time").toString()
 
+            if (dataList[position].get("isSoon").toString() == "1") {
+                holder.timeTextView.setTextColor(ContextCompat.getColor(applicationContext, R.color.purple_200))
+            }
+
             holder.deleteButton.setOnClickListener {
                 removeData(dataList[position].get("id").toString())
                 updateRecyclerView()
@@ -84,10 +89,10 @@ class MainActivity : AppCompatActivity() {
                 dialog.title = dataList[position].get("title").toString()
                 dialog.post = dataList[position].get("post").toString()
                 dialog.time = dataList[position].get("time").toString()
-                Log.e(TAG, "title: ${dialog.title}, post: ${dialog.post}, time: ${dialog.time}")
-                dialog.listener = {title, post, time ->
+                Log.e(TAG, "title: ${dialog.title}, post: ${dialog.post}, time: ${dialog.time}, isSoon: ${dialog.isSoon}")
+                dialog.listener = {title, post, time, isSoon ->
                     // 데이터베이스에 저장
-                    editData(dataList[position].get("id").toString(), title, post, time)
+                    editData(dataList[position].get("id").toString(), title, post, time, isSoon)
                     updateRecyclerView()
                 }
                 dialog.show(supportFragmentManager, "dialog")
@@ -111,9 +116,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 데이터베이스에 데이터 저장
-    fun saveData(title: String, post: String, time: String){
-        val sql = "INSERT INTO post (title, post, time) values('$title', '$post', '$time')"
+    fun saveData(title: String, post: String, time: String, isSoon: Int){
+        val sql = "INSERT INTO post (title, post, time, isSoon) values('$title', '$post', '$time', $isSoon)"
         val dbHelper = PostDbHelper(applicationContext)
+        Log.e(TAG+"saveDATA", "$title, $post, $time, $isSoon")
         dbHelper.writableDatabase.execSQL(sql)
     }
 
@@ -129,6 +135,7 @@ class MainActivity : AppCompatActivity() {
                 map["title"] = cursor.getString(cursor.getColumnIndex("title"))
                 map["post"] = cursor.getString(cursor.getColumnIndex("post"))
                 map["time"] = cursor.getString(cursor.getColumnIndex("time"))
+                map["isSoon"] = cursor.getString(cursor.getColumnIndex("isSoon"))
                 resultList.add(map)
             } while (cursor.moveToNext())
         }
@@ -143,9 +150,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 데이터 수정
-    fun editData(id: String, title: String, post: String, time: String) {
+    fun editData(id: String, title: String, post: String, time: String, isSoon: Int) {
         val dbHelper = PostDbHelper(applicationContext)
-        val sql = "UPDATE post set title = '$title', post = '$post', time = '$time' where id = $id"
+        val sql = "UPDATE post set title = '$title', post = '$post', time = '$time', isSoon = $isSoon where id = $id"
+        Log.e(TAG+"editDATA", "$title, $post, $time, $isSoon")
         dbHelper.writableDatabase.execSQL(sql)
     }
 

@@ -10,7 +10,7 @@ class PostDbHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
     // 데이터베이스가 최초 생성될때
     // 앱이 새로 시작되거나 삭제후 재설치 될때
     override fun onCreate(db: SQLiteDatabase?) {
-        val createSql = CREATE_SQL_VER3
+        val createSql = CREATE_SQL_VER4
         db?.execSQL(createSql)
     }
 
@@ -19,11 +19,12 @@ class PostDbHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         when(oldVersion) {
             1 -> db?.execSQL("ALTER TABLE post ADD COLUMN post TEXT")
             in 1..2 -> db?.execSQL("ALTER TABLE post ADD COLUMN time TEXT")
+            in 1..3 -> db?.execSQL("ALTER TABLE post ADD COLUMN isSoon INTEGER")
         }
     }
 
     companion object {
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 4
         const val DATABASE_NAME = "post.db"
 
         // 데이터 생성 쿼리를 버전별로 가지고 있다. 현재 버전은 3
@@ -39,6 +40,12 @@ class PostDbHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
                 "title TEXT," +
                 "post TEXT," +
                 "time TEXT )"
+        const val CREATE_SQL_VER4 =  "CREATE TABLE post(" +
+                "id INTEGER PRIMARY KEY," +
+                "title TEXT," +
+                "post TEXT," +
+                "time TEXT," +
+                "isSoon INTEGER )"
     }
 
 }
