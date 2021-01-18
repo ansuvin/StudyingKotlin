@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.dialog_write.*
 
 class WriteDialog : DialogFragment() {
     // 다이얼로그의 버튼이 늘린경우
-    val listener: (String, String) -> Unit = {title, post -> }
+    var listener: (String, String) -> Unit = {title, post -> }
 
     // 수정인 경우 title, post를 세팅
     var title = ""
