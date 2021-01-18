@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">익명 SNS</string>
+    <string name="app_name">Pra05_AnonymousSNS</string>
 
     <string name="email">이메일</string>
     <string name="password">비밀번호</string>
@@ -15,5 +15,6 @@
     <!-- FaceBook Login -->
     <string name="facebook_app_id">128534109090576</string>
     <string name="fb_login_protocol_scheme">fb128534109090576</string>
+
 
 </resources>
