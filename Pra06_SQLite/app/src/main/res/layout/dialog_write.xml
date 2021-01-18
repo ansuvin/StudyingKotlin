@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/titleField" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/saveBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -56,6 +56,6 @@
         android:text="취소"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+        app:layout_constraintTop_toBottomOf="@+id/saveBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
