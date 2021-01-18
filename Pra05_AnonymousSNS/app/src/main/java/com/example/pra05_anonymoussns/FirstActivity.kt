@@ -75,7 +75,6 @@ class FirstActivity : AppCompatActivity() {
 
             override fun onError(error: FacebookException?) {
                 Log.e(TAG, "error $error")
-                errorText.text = error.toString()
             }
 
         })
