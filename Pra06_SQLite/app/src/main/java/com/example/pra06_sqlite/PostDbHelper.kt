@@ -18,7 +18,7 @@ class PostDbHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         when(oldVersion) {
             1 -> db?.execSQL("ALTER TABLE post ADD COLUMN post TEXT")
-            in 1..2 -> db?.execSQL("ALTER TABLE post ADD COLUMN time TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+            in 1..2 -> db?.execSQL("ALTER TABLE post ADD COLUMN time TEXT")
         }
     }
 
@@ -38,7 +38,7 @@ class PostDbHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
                 "id INTEGER PRIMARY KEY," +
                 "title TEXT," +
                 "post TEXT," +
-                "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP )"
+                "time TEXT )"
     }
 
 }

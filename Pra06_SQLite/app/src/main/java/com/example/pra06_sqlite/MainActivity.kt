@@ -3,6 +3,7 @@ package com.example.pra06_sqlite
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.card.view.*
 
 class MainActivity : AppCompatActivity() {
+
+    val TAG = "MainActivity"
 
     // 데이터베이스에서 읽은 데이터를 맵의 리스트 형태로 저장
     val dataList = mutableListOf<MutableMap<String, String>>()
@@ -30,9 +33,9 @@ class MainActivity : AppCompatActivity() {
             // WriteDialog
             val dialog = WriteDialog()
             // 다이얼로그 완료 리스너
-            dialog.listener = {title, post ->
+            dialog.listener = {title, post ,time->
                 // 데이터베이스 저장
-                saveData(title, post)
+                saveData(title, post, time)
                 // recyclerView 업데이트
                 updateRecyclerView()
             }
@@ -80,9 +83,11 @@ class MainActivity : AppCompatActivity() {
                 val dialog = WriteDialog()
                 dialog.title = dataList[position].get("title").toString()
                 dialog.post = dataList[position].get("post").toString()
-                dialog.listener = {title, post ->
+                dialog.time = dataList[position].get("time").toString()
+                Log.e(TAG, "title: ${dialog.title}, post: ${dialog.post}, time: ${dialog.time}")
+                dialog.listener = {title, post, time ->
                     // 데이터베이스에 저장
-                    editData(dataList[position].get("id").toString(), title, post)
+                    editData(dataList[position].get("id").toString(), title, post, time)
                     updateRecyclerView()
                 }
                 dialog.show(supportFragmentManager, "dialog")
@@ -106,8 +111,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 데이터베이스에 데이터 저장
-    fun saveData(title: String, post: String){
-        val sql = "INSERT INTO post (title, post) values('$title', '$post')"
+    fun saveData(title: String, post: String, time: String){
+        val sql = "INSERT INTO post (title, post, time) values('$title', '$post', '$time')"
         val dbHelper = PostDbHelper(applicationContext)
         dbHelper.writableDatabase.execSQL(sql)
     }
@@ -138,9 +143,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 데이터 수정
-    fun editData(id: String, title: String, post: String) {
+    fun editData(id: String, title: String, post: String, time: String) {
         val dbHelper = PostDbHelper(applicationContext)
-        val sql = "UPDATE post set title = '$title', post = '$post', time = CURRENT_TIMESTAMP where id = $id"
+        val sql = "UPDATE post set title = '$title', post = '$post', time = '$time' where id = $id"
         dbHelper.writableDatabase.execSQL(sql)
     }
 
