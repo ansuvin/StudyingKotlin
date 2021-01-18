@@ -43,3 +43,8 @@
   * RecyclerView
   * Picasso 이미지 로드 라이브러리 (메모리의 효율적인 관리를 위해)
   * Firebase
+  
+### Pra06_SQLite
+TO-DO List 앱 [2021-01-18]
+* 핵심
+  * SQLite
