@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -42,4 +43,8 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // CalendarView 라이브러리
+    implementation 'com.github.applikeysolutions:cosmocalendar:1.0.4'
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 }
