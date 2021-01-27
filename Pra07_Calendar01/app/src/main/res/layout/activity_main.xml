@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
@@ -15,6 +16,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:mcv_selectionColor="#f79256"
         app:mcv_calendarMode="month" />
+        -->
+
+    <jp.co.recruit_mp.android.lightcalendarview.LightCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lcv_textColor="@color/black"
+        app:lcv_selectionColor="@color/purple_500"
+        app:lcv_accentColor="@color/design_default_color_primary_variant"/>
 
     <TextView
         android:id="@+id/textView"

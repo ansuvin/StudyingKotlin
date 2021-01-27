@@ -46,4 +46,6 @@ dependencies {
 
     // CalendarView 라이브러리
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+    implementation 'jp.co.recruit_mp:LightCalendarView:1.0.1'
+    implementation 'com.github.marcohc:robotocalendarview:Tag'
 }

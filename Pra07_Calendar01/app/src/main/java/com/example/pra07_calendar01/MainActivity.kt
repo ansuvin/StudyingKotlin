@@ -1,11 +1,13 @@
 package com.example.pra07_calendar01
 
 import android.app.Activity
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import jp.co.recruit_mp.android.lightcalendarview.WeekDay
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,7 +19,8 @@ class MainActivity : AppCompatActivity() {
 
     val calList = ArrayList<CalendarDay> ()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    // region CalendarView1
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -49,6 +52,17 @@ class MainActivity : AppCompatActivity() {
 
     fun String.convertDateToTimestamp(): Long =
             SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).parse(this).time
+*/
+    //endregion
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        calendarView.setWeekDayFilterColor(WeekDay.SUNDAY, Color.RED)
+        calendarView.setDayFilterColor(WeekDay.FRIDAY, Color.RED)
+
+    }
 
     fun showToast(str: String) {
         Toast.makeText(applicationContext, str, Toast.LENGTH_SHORT).show()
