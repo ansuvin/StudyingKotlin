@@ -18,6 +18,7 @@
         app:mcv_calendarMode="month" />
         -->
 
+    <!--
     <jp.co.recruit_mp.android.lightcalendarview.LightCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
@@ -37,5 +38,13 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        -->
+
+    <com.applandeo.materialcalendarview.CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

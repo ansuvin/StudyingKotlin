@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.applandeo.materialcalendarview.EventDay
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import jp.co.recruit_mp.android.lightcalendarview.WeekDay
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,6 +19,9 @@ class MainActivity : AppCompatActivity() {
     val CAL_TAG = "CALENDAR"
 
     val calList = ArrayList<CalendarDay> ()
+
+    val events = ArrayList<EventDay>()
+    var selectedDates : List<Calendar>? = arrayListOf()
 
     // region CalendarView1
     /*override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +59,8 @@ class MainActivity : AppCompatActivity() {
 */
     //endregion
 
+    // region CalendarView2
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,6 +68,32 @@ class MainActivity : AppCompatActivity() {
         calendarView.setWeekDayFilterColor(WeekDay.SUNDAY, Color.RED)
         calendarView.setDayFilterColor(WeekDay.FRIDAY, Color.RED)
 
+    }
+     */
+    // endregion
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val calendar = Calendar.getInstance()
+
+        events.add(EventDay(calendar, R.drawable.ic_arrow_left, Color.RED))
+
+        calendarView.setEvents(events)
+
+        selectedDates = calendarView.selectedDates
+        Log.e(CAL_TAG, selectedDates.toString())
+        calendar.set(2021,1,28)
+        calendarView.setDate(calendar)
+
+        calendarView.setOnDayClickListener {
+            val clickedDayCalendar = it.calendar
+            selectedDates = listOf(clickedDayCalendar)
+            events.add(EventDay(clickedDayCalendar, R.drawable.ic_arrow_right))
+            Log.e(CAL_TAG, clickedDayCalendar.toString())
+            calendarView.setEvents(events)
+        }
     }
 
     fun showToast(str: String) {
