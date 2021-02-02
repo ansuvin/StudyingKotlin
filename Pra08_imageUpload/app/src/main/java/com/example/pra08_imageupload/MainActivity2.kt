@@ -13,10 +13,14 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import retrofit2.Call
@@ -47,6 +51,8 @@ class MainActivity2 : AppCompatActivity() {
         // 레트로핏 설정
         initRetrofitClient()
 
+        getImage()
+
         // 이미지 받아오기 버튼
         getImgBtn.setOnClickListener {
             startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT)
@@ -62,6 +68,11 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
+    fun getImage() {
+        Picasso.get().load("http://f0f3e680fa1c.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg").into(imageView)
+        Glide.with(applicationContext).load("http://f0f3e680fa1c.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg").into(imageView2)
+    }
+
     // 퍼미션 요청
     private fun askPermissions() {
         // 카메라
@@ -73,10 +84,10 @@ class MainActivity2 : AppCompatActivity() {
         permissionsToRequest = findUnAskedPermissions(permissions)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionsToRequest!!.size > 0) requestPermissions(
-                permissionsToRequest!!.toArray(
-                    arrayOfNulls<String>(permissionsToRequest!!.size)
-                ), ALL_PERMISSIONS_RESULT
-            // 요청하기
+                    permissionsToRequest!!.toArray(
+                            arrayOfNulls<String>(permissionsToRequest!!.size)
+                    ), ALL_PERMISSIONS_RESULT
+                    // 요청하기
             )
         }
     }
@@ -86,7 +97,7 @@ class MainActivity2 : AppCompatActivity() {
         val client = OkHttpClient.Builder().build()
         apiService =
             Retrofit.Builder().baseUrl("http://f0f3e680fa1c.ngrok.io").client(client).build().create(
-                ApiService::class.java
+                    ApiService::class.java
             )
     }
 
@@ -242,8 +253,8 @@ class MainActivity2 : AppCompatActivity() {
             val req: Call<ResponseBody> = apiService!!.postImage(body, name)
             req.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
                 ) {
                     if (response.code() == 200) {
                         textView.text = "Uploaded Successfully!";
@@ -269,9 +280,9 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -286,11 +297,11 @@ class MainActivity2 : AppCompatActivity() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (shouldShowRequestPermissionRationale(permissionsRejected[0])) {
                             showMessageOKCancel(
-                                "These permissions are mandatory for the application. Please allow access."
+                                    "These permissions are mandatory for the application. Please allow access."
                             ) { dialog, which ->
                                 requestPermissions(
-                                    permissionsRejected.toTypedArray(),
-                                    ALL_PERMISSIONS_RESULT
+                                        permissionsRejected.toTypedArray(),
+                                        ALL_PERMISSIONS_RESULT
                                 )
                             }
                             return
