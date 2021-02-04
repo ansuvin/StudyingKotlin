@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pra10_databinding.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,15 +18,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // binding 세팅
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        // 현재 binding시킨 xml의 variable name
-        binding.main = this
+        binding.activity = this@MainActivity
+
+        setRcv()
     }
 
-    fun btnClick (view: View) {
-        Log.e("TAG", "눌림")
-        text = "Hello Binding"
-        binding.invalidateAll()
+    fun setRcv() {
+        val profileAdapter = ProfileAdapter(this)
+        binding.mainRcv.layoutManager = LinearLayoutManager(this)
+        binding.mainRcv.adapter = profileAdapter
+        profileAdapter.data = listOf(
+            ProfileData(name = "Kang", age = 35),
+            ProfileData(name = "An", age = 19)
+        )
+        profileAdapter.notifyDataSetChanged()
+    }
+
+    fun btnClick(view: View) {
+        Toast.makeText(this, "Button Click", Toast.LENGTH_SHORT).show()
     }
 }
