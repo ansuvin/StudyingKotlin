@@ -1,6 +1,7 @@
 package com.example.pra10_databinding
 
 data class ProfileData(
+    var profile: String,
     var name: String,
     var age: Int
 ) {

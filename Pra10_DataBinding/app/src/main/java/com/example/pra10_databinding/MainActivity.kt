@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
         binding.mainRcv.layoutManager = LinearLayoutManager(this)
         binding.mainRcv.adapter = profileAdapter
         profileAdapter.data = listOf(
-            ProfileData(name = "Kang", age = 35),
-            ProfileData(name = "An", age = 19)
+            ProfileData(name = "Kang", age = 35, profile = "http://60411e26c1eb.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"),
+            ProfileData(name = "An", age = 19, profile = "@drawable/arrow")
         )
         profileAdapter.notifyDataSetChanged()
     }
