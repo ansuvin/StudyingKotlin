@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pra10_databinding.databinding.ActivityMainBinding
 
@@ -14,43 +15,23 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    var text = "Hello!!!"
+    // 라이브 데이터 선언
+    val liveText = MutableLiveData<String>()
+    var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.activity = this@MainActivity
+        binding.apply {
+            lifecycleOwner = this@MainActivity // binding에 LifeCycleOwner을 지정해줘야 LiveData가 실시간으로 변화
+            activity = this@MainActivity
 
-        setRcv()
-        setObserv()
-    }
-
-    fun setRcv() {
-        val profileAdapter = ProfileAdapter(this)
-        binding.mainRcv.layoutManager = LinearLayoutManager(this)
-        binding.mainRcv.adapter = profileAdapter
-        profileAdapter.data = listOf(
-            ProfileData(name = "Kang", age = 35, profile = "http://60411e26c1eb.ngrok.io/uploads/359cc2d83bd7eecabec16e64a2690efd.jpg"),
-            ProfileData(name = "An", age = 19, profile = "@drawable/arrow")
-        )
-        profileAdapter.notifyDataSetChanged()
-    }
-
-    fun btnClick(view: View) {
-        Toast.makeText(this, "Button Click", Toast.LENGTH_SHORT).show()
-    }
-
-    fun setObserv() {
-        // 실시간으로 데이터를 관찰하기 위해
-        var item : ObservableData = ObservableData()
-        item.site = "Naver"
-        binding.site = item
-
-        Handler().postDelayed(Runnable {
-            run {
-                item.site = "Google"
+            btnChange.setOnClickListener{
+                liveText.value = "Hello LiveData! ${++count}"
             }
-        }, 3000)
+        }
+        liveText.value="Hello DataBinding"
     }
+
 }
