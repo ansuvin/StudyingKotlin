@@ -1,11 +1,12 @@
-package com.example.pra11_mvvm
+package com.example.pra11_mvvm.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.pra11_mvvm.R
 
-class MainActivity : AppCompatActivity() {
+class SubActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_sub)
     }
 }
