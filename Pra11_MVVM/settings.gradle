@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "Pra11_MVVM"
