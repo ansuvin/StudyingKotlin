@@ -76,3 +76,10 @@ buildFeatures {
         viewBinding = true
     }
 ```
+
+### Pra10_DataBinding
+dataBinding과 LiveData 이용하기
+* DataBinding
+  * 기본 Binding
+  * 실시간 데이터 변화 감지 Observable
+* LiveData - Data의 변경을 관찰 할 수 있는 Data Holder 클래스
