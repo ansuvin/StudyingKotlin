@@ -2,6 +2,7 @@ package com.example.pra10_databinding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding.activity = this@MainActivity
 
         setRcv()
+        setObserv()
     }
 
     fun setRcv() {
@@ -37,5 +39,18 @@ class MainActivity : AppCompatActivity() {
 
     fun btnClick(view: View) {
         Toast.makeText(this, "Button Click", Toast.LENGTH_SHORT).show()
+    }
+
+    fun setObserv() {
+        // 실시간으로 데이터를 관찰하기 위해
+        var item : ObservableData = ObservableData()
+        item.site = "Naver"
+        binding.site = item
+
+        Handler().postDelayed(Runnable {
+            run {
+                item.site = "Google"
+            }
+        }, 3000)
     }
 }
