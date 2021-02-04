@@ -49,3 +49,30 @@ TO-DO List 앱 [2021-01-18]
 * 핵심
   * SQLite
   * DialogFragment
+
+### Pra07_Calendar01
+youth28 프로젝트에 사용될 CalendarView 라이브러리 예제(테스트)
+* 사용 라이브러리
+  * Applikey Solutions CusmoCalendar (https://github.com/ApplikeySolutions/CosmoCalendar)
+  * recruit-mp LightCalendarView (https://github.com/recruit-mp/LightCalendarView)
+  * Applandeo Material-Calendar-View (https://github.com/Applandeo/Material-Calendar-View)
+  * SundeepK CompactCalendarView (https://github.com/SundeepK/CompactCalendarView) <- 최종 사용
+  
+### Pra08_imageUpload
+서버에 이미지 업로드하기 (+ 받아오기)
+* 사용서버 node.js
+* 핵심
+  * Retrofit @Part
+  * Multipart (MultipartBody.Part)
+  * Intent.ACTION_GET_CONTENT (내부저장소에 접근하여 사진 받아오기)
+  * Picasso 이미지 로드 라이브러리 (상대적으로 화질이 좋지만 불러오는데 느리다)
+  * Glide 이미지 로드 라이브러리 (상대적으로 화질이 좋지않지만 빠르게 불러온다)
+  
+### Pra09_ViewBinding
+findViewById를 사용하지 않고 viewBinding을 이용하기
+```
+Android Studio Version 4.0 이상
+buildFeatures {
+        viewBinding = true
+    }
+```
