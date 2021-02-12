@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.pra11_mvvm.view.MainActivity" />
+            type="com.example.pra11_mvvm.viewmodel.CounterViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:id="@+id/counterTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.title}"
+            android:text="@{Integer.toString(viewModel.counter)}"
             app:layout_constraintBottom_toTopOf="@+id/floatingActionButton2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
             android:clickable="true"
-            android:onClick="@{viewModel::onAddButtonClick}"
+            android:onClick="@{() -> viewModel.increase()}"
             app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
             android:clickable="true"
-            android:onClick="@{viewModel::onSubButtonClick}"
+            android:onClick="@{() -> viewModel.decrease()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

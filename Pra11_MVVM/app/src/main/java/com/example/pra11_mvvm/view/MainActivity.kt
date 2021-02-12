@@ -19,23 +19,12 @@ class MainActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = this
+        binding.lifecycleOwner = this   // 이 객체가 이 액티비티의 라이프사이클을 참조하면서 데이터가 변경되거나 하면 refresh 하겠다
 
         // viewModel 가져오기
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
             .get(CounterViewModel::class.java)
-
-        viewModel.counter.observe(this, Observer<Int>() {
-            binding.counterTV.text = "${it} "
-        })
-    }
-
-    fun onAddButtonClick(view: View) {
-        viewModel.increase()
-    }
-
-    fun onSubButtonClick(view: View) {
-        viewModel.decrease()
+        binding.viewModel = viewModel
     }
 
 }
