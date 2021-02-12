@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.pra11_mvvm.R
@@ -23,16 +24,18 @@ class MainActivity:AppCompatActivity() {
         // viewModel 가져오기
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())
             .get(CounterViewModel::class.java)
+
+        viewModel.counter.observe(this, Observer<Int>() {
+            binding.counterTV.text = "${it} "
+        })
     }
 
     fun onAddButtonClick(view: View) {
-        viewModel.counter++
-        binding.counterTV.text = "${viewModel.counter} "
+        viewModel.increase()
     }
 
     fun onSubButtonClick(view: View) {
-        viewModel.counter--
-        binding.counterTV.text = "${viewModel.counter} "
+        viewModel.decrease()
     }
 
 }
